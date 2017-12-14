@@ -126,10 +126,8 @@ def _standardize_input_data(data, names, shapes=None,
 
     # Make arrays at least 2D.
     for i in range_fn(len(names)):
-        array = arrays[i]
-        if len(array.shape) == 1:
-            array = np.expand_dims(array, 1)
-            arrays[i] = array
+        if len(arrays[i].shape) == 1:
+            arrays[i] = np.expand_dims(arrays[i], 1)
 
     # Check shapes compatibility.
     if shapes:
@@ -147,14 +145,13 @@ def _standardize_input_data(data, names, shapes=None,
                 if not j and not check_batch_axis:
                     # skip the first axis
                     continue
-                if ref_dim:
-                    if ref_dim != dim:
-                        raise ValueError(
-                            'Error when checking ' + exception_prefix +
-                            ': expected ' + names[i] +
-                            ' to have shape ' + str(shapes[i]) +
-                            ' but got array with shape ' +
-                            str(array.shape))
+                if ref_dim and ref_dim != dim:
+                    raise ValueError(
+                        'Error when checking ' + exception_prefix +
+                        ': expected ' + names[i] +
+                        ' to have shape ' + str(shapes[i]) +
+                        ' but got array with shape ' +
+                        str(array.shape))
     return arrays
 
 
