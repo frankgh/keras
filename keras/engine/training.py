@@ -58,7 +58,7 @@ def _standardize_input_data(data, names, shapes=None,
                              'expected no data, but got:', data)
         return []
     if data is None:
-        return [None for _ in range(len(names))]
+        return [None] * len(names)
     if isinstance(data, dict):
         for key, value in data.items():
             if value.__class__.__name__ == 'DataFrame':
@@ -119,6 +119,8 @@ def _standardize_input_data(data, names, shapes=None,
                              ' arrays, but only received one array. '
                              'Found: array with shape ' + str(data.shape))
         arrays = [data]
+
+
 
     # Make arrays at least 2D.
     for i in range(len(names)):
