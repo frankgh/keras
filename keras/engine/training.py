@@ -6,6 +6,7 @@ import warnings
 import copy
 import numpy as np
 import six
+import sys
 
 from keras.utils import Sequence
 from keras.utils import GeneratorEnqueuer
@@ -120,10 +121,10 @@ def _standardize_input_data(data, names, shapes=None,
                              'Found: array with shape ' + str(data.shape))
         arrays = [data]
 
-
+    range_fn = xrange if sys.version_info < (3,) else range
 
     # Make arrays at least 2D.
-    for i in range(len(names)):
+    for i in range_fn(len(names)):
         array = arrays[i]
         if len(array.shape) == 1:
             array = np.expand_dims(array, 1)
@@ -131,7 +132,7 @@ def _standardize_input_data(data, names, shapes=None,
 
     # Check shapes compatibility.
     if shapes:
-        for i in range(len(names)):
+        for i in range_fn(len(names)):
             if shapes[i] is None:
                 continue
             array = arrays[i]
