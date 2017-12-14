@@ -61,16 +61,17 @@ def _standardize_input_data(data, names, shapes=None,
     if data is None:
         return [None] * len(names)
     if isinstance(data, dict):
-        for key, value in data.items():
-            if value.__class__.__name__ == 'DataFrame':
-                data[key] = value.values
         arrays = []
         for name in names:
             if name not in data:
                 raise ValueError('No data provided for "' +
                                  name + '". Need data for each key in: ' +
                                  str(names))
-            arrays.append(data[name])
+            value = data[name]
+            if value.__class__.__name__ == 'DataFrame':
+                value = value.values
+                data[name] = value
+            arrays.append(value)
     elif isinstance(data, list):
         for key, value in enumerate(data):
             if value.__class__.__name__ == 'DataFrame':
